@@ -2,7 +2,7 @@ import { PostDatabase } from "./../../database/post/PostDatabase";
 import { NotFoundError } from "./../../error/NotFoundError";
 import { UserDataBase } from "./../../database/users/UserDataBase";
 import { BadRequestError } from "./../../error/BadRequesteError";
-import { createPost } from "./../../types/types";
+import { createPost, like_dislike, updatePost } from "./../../types/types";
 import { Post } from "../../models/posts/Post";
 export class PostBusiness {
   public async get_post() {
@@ -75,6 +75,48 @@ export class PostBusiness {
     return output;
   }
 
-  public async edit_post() {}
-  public async delete() {}
+  public async edit_post(input: updatePost) {
+    const post_db = new PostDatabase();
+    const [postOld] /*?*/ = await post_db.get_post_by_id(input.id);
+    if (!postOld) {
+      throw new NotFoundError("post não encontrado");
+    }
+
+    const postUpdate = {};
+
+    const post_database = new PostDatabase();
+    // await post_database.edit_post(postUpdate);
+    const output = {
+      message: "post alterado com sucesso",
+    };
+    return output;
+  }
+
+  public async delete(id: string) {
+    const post_db = new PostDatabase();
+    const [post] = await post_db.get_post_by_id(id);
+    if (!post) {
+      throw new NotFoundError("post não encontrado");
+    }
+    const result = await post_db.delete_post(id);
+    const output = {
+      message: `Post excluido com sucesso.`,
+    };
+    return output;
+  }
+  public async like_dislike_post(input: like_dislike) {
+    const { user_id, post_id, like_dislike } = input;
+    const post_db = new PostDatabase();
+    const [post] = await post_db.get_post_by_id(post_id);
+    if (!post) {
+      throw new NotFoundError("post não encontrado");
+    }
+    const userDataBase = new UserDataBase();
+    const [isUser] = await userDataBase.getById(user_id);
+    if (!isUser) {
+      throw new BadRequestError("'Usuario' não cadastrado");
+    }
+    const post_database = new PostDatabase();
+    // const post_database.
+  }
 }

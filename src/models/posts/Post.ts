@@ -1,4 +1,12 @@
 export class Post {
+  private id: string;
+  private creator_id: string;
+  private content: string;
+  private likes: number;
+  private dislikes: number;
+  private created_at: string;
+  private update_at: string;
+
   public get_id(): string {
     return this.id;
   }
@@ -28,7 +36,7 @@ export class Post {
     this.creator_id = newValue;
   }
   public set_content(newValue: string) {
-    this.created_at = newValue;
+    this.content = newValue;
   }
   public set_likes(newValue: number) {
     this.likes = newValue;
@@ -44,12 +52,20 @@ export class Post {
   }
 
   constructor(
-    private id: string,
-    private creator_id: string,
-    private content: string,
-    private likes: number,
-    private dislikes: number,
-    private created_at: string,
-    private update_at: string
-  ) {}
+    id: string,
+    creator_id: string,
+    content: string,
+    likes: number,
+    dislikes: number,
+    created_at: string,
+    update_at: string
+  ) {
+    this.id = id;
+    this.creator_id = creator_id;
+    this.content = content;
+    this.likes = likes;
+    this.dislikes = dislikes;
+    this.created_at = created_at;
+    this.update_at = update_at;
+  }
 }

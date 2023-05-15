@@ -41,6 +41,13 @@ export class PostController {
   }
   public async edit_post(req: Request, res: Response): Promise<void> {
     try {
+      const input = {
+        id: req.params.id,
+        content: req.body.content,
+      };
+      const post_business = new PostBusiness();
+      const result = await post_business.edit_post(input);
+      res.status(200).send(result);
     } catch (error) {
       if (error instanceof BaseError) {
         res.status(error.statusCode).send(error.message);
@@ -51,6 +58,26 @@ export class PostController {
   }
   public async delete_post(req: Request, res: Response): Promise<void> {
     try {
+      const { id } = req.params;
+      const post_business = new PostBusiness();
+      const result = await post_business.delete(id);
+      res.status(200).send(result);
+    } catch (error) {
+      if (error instanceof BaseError) {
+        res.status(error.statusCode).send(error.message);
+      } else {
+        res.status(500).send("Erro inesperado");
+      }
+    }
+  }
+  public async like_dislike_post(req: Request, res: Response): Promise<void> {
+    try {
+      const input = {
+        user_id: req.params,
+        post_id: req.params,
+        like_dislike: req.body,
+      };
+      res.status(200).send("result");
     } catch (error) {
       if (error instanceof BaseError) {
         res.status(error.statusCode).send(error.message);

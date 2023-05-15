@@ -21,3 +21,13 @@ export interface createPost {
   created_at: String;
   update_at: String;
 }
+export interface updatePost {
+  id: string;
+  content: string;
+}
+
+export interface like_dislike {
+  user_id: string;
+  post_id: string;
+  like_dislike: number;
+}
