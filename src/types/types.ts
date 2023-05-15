@@ -6,3 +6,8 @@ export interface userCreate {
   role: number;
   created_at: string;
 }
+
+export interface userLogin {
+  userEmail: string;
+  userPassword: string;
+}

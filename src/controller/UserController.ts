@@ -1,3 +1,4 @@
+import { userLogin } from "./../types/types";
 import { UserBusiness } from "./../business/users/UserBusiness";
 import { Request, Response } from "express";
 import { userCreate } from "../types/types";
@@ -27,11 +28,16 @@ export class UserController {
       }
     }
   }
-  public async getById(req: Request, res: Response) {
+
+  public async login(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
+      const { email, password } = req.body;
+      const userLogin = {
+        userEmail: email,
+        userPassword: password,
+      };
       const userBusiness = new UserBusiness();
-      const result = await userBusiness.getById(id);
+      const result = await userBusiness.login(userLogin);
       res.status(200).send(result);
     } catch (error) {
       if (error instanceof Error) {
