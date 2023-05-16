@@ -2,11 +2,13 @@ import { userLogin } from "./../../types/types";
 import { User } from "../../models/users/User";
 import { userCreate } from "../../types/types";
 import { BaseDatabase } from "../BaseDataBase";
+import { SingUpDtoInputDTO } from "../../DTOs/users_DTOs/singUp.DTO";
+import { LoginInputDTO } from "../../DTOs/users_DTOs/login.DTO";
 
 export class UserDataBase extends BaseDatabase {
   public static TABLE_ACCOUNTS = "users";
 
-  public async signUp(user: userCreate) {
+  public async signUp(user: User) {
     await BaseDatabase.connection(UserDataBase.TABLE_ACCOUNTS).insert(user);
   }
   public async getById(id: string): Promise<User[]> {
@@ -22,11 +24,11 @@ export class UserDataBase extends BaseDatabase {
     ).where({ email: email });
     return user;
   }
-  public async login(userLogin: userLogin) {
-    const { userEmail, userPassword } = userLogin;
-    const user = await BaseDatabase.connection(
+  public async login(input: LoginInputDTO):Promise<User> {
+    const { email, password } = input;
+    const [user] = await BaseDatabase.connection(
       UserDataBase.TABLE_ACCOUNTS
-    ).where({ email: userEmail, password: userPassword });
+    ).where({ email: email, password: password });
 
     return user;
   }
