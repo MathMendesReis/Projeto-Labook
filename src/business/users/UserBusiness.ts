@@ -1,44 +1,52 @@
+import { NotFoundError } from './../../error/NotFoundError';
 import { BadRequestError } from "./../../error/BadRequesteError";
 import { User } from "./../../models/users/User";
 import { UserDataBase } from "./../../database/users/UserDataBase";
-import { userCreate, userLogin } from "../../types/types";
+import {
+  SingUpDtoInputDTO,
+  SingUpDtoOutputDTO,
+  USER_ROLES,
+} from "../../DTOs/users_DTOs/singUp.DTO";
+import { LoginInputDTO } from "../../DTOs/users_DTOs/login.DTO";
 
 export class UserBusiness {
-  public async signUp(user: userCreate): Promise<{}> {
-    const userDataBase = new UserDataBase();
-    const isUser = await userDataBase.getById(user.id);
+  constructor(private userDataBase: UserDataBase) {}
+  public async signUp(input: SingUpDtoInputDTO): Promise<SingUpDtoOutputDTO> {
+    const id:string = Math.floor(Math.random() * 100).toString()
+    const isUser = await this.userDataBase.getById(id);
     if (isUser.length > 0) {
       throw new BadRequestError("'Usuario' ja cadastrado");
     }
-    const isEmail = await userDataBase.getByEmail(user.email);
+    const isEmail = await this.userDataBase.getByEmail(input.email);
     if (isEmail.length > 0) {
       throw new BadRequestError("'email' já cadastrado");
     }
-    if (!user.email.includes("@")) {
-      throw new BadRequestError("necessario inserir um email valído.");
-    }
-    await userDataBase.signUp(user);
+    const newUser = new User(
+      id,
+      input.name,
+      input.email,
+      input.password,
+      USER_ROLES.NORMAL,
+      new Date().toISOString()
+    );
+
+    const result = await this.userDataBase.signUp(newUser);
     const output = {
-      message: "cadastro realizado com sucesso",
+      token: "um token jwt"
     };
     return output;
   }
 
-  public async login(userLogin: userLogin) {
+  public async login(input: LoginInputDTO):Promise<SingUpDtoOutputDTO> {
     const userDataBase = new UserDataBase();
-    if (typeof userLogin.userEmail !== "string") {
-      throw new BadRequestError("email ou senha incorreta.");
+   
+    const result = await userDataBase.login(input);
+    if(!result){
+      throw new NotFoundError("email ou senha errada.")
     }
-    if (typeof userLogin.userPassword !== "string") {
-      throw new BadRequestError("email ou senha incorreta.");
-    }
-    const result = await userDataBase.login(userLogin);
-    if (result.length === 0) {
-      throw new BadRequestError("email ou senha incorreta.");
-    }
-    const output = {
-      message: "'login' realizado com sucesso",
+    const output:SingUpDtoOutputDTO = {
+      token: "um token jwt"
     };
-    return result;
+    return output;
   }
 }

@@ -1,4 +1,6 @@
 export class Post {
+ 
+
   public get_id(): string {
     return this.id;
   }
@@ -28,7 +30,7 @@ export class Post {
     this.creator_id = newValue;
   }
   public set_content(newValue: string) {
-    this.created_at = newValue;
+    this.content = newValue;
   }
   public set_likes(newValue: number) {
     this.likes = newValue;
@@ -51,5 +53,7 @@ export class Post {
     private dislikes: number,
     private created_at: string,
     private update_at: string
-  ) {}
+  ) {
+    
+  }
 }
