@@ -1,8 +1,6 @@
-import { userLogin } from "./../../types/types";
 import { User } from "../../models/users/User";
 import { userCreate } from "../../types/types";
 import { BaseDatabase } from "../BaseDataBase";
-import { SingUpDtoInputDTO } from "../../DTOs/users_DTOs/singUp.DTO";
 import { LoginInputDTO } from "../../DTOs/users_DTOs/login.DTO";
 
 export class UserDataBase extends BaseDatabase {

@@ -2,20 +2,19 @@ import { LoginDTOSchemma } from './../DTOs/users_DTOs/login.DTO';
 import { UserBusiness } from "./../business/users/UserBusiness";
 import { Request, Response } from "express";
 import { BaseError } from "../error/BaseError";
-import { SingUpDtoInputDTO } from "../DTOs/users_DTOs/singUp.DTO";
+import { SingUpDtoSchemma } from "../DTOs/users_DTOs/singUp.DTO";
 import {ZodError} from 'zod'
 export class UserController {
   constructor(private userBusiness: UserBusiness) {}
 
   public signUp = async (req: Request, res: Response): Promise<void> => {
     try {
-      const input: SingUpDtoInputDTO = {
-     
+      const input = SingUpDtoSchemma.parse({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
 
-      };
+      });
 
       const result = await this.userBusiness.signUp(input);
       res.status(200).send(result);
