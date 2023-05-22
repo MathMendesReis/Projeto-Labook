@@ -1,3 +1,13 @@
+import { USER_ROLES } from "../../DTOs/users_DTOs/singUp.DTO";
+
+export interface UserModel {
+  id: string;
+  name: string;
+  email: string;
+  password:string,
+  role: USER_ROLES;
+  createdAt: string;
+}
 export class User {
   constructor(
     private id: string,

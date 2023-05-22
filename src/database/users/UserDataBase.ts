@@ -1,4 +1,4 @@
-import { User } from "../../models/users/User";
+import { User, UserModel } from "../../models/users/User";
 import { userCreate } from "../../types/types";
 import { BaseDatabase } from "../BaseDataBase";
 import { LoginInputDTO } from "../../DTOs/users_DTOs/login.DTO";
@@ -22,12 +22,11 @@ export class UserDataBase extends BaseDatabase {
     ).where({ email: email });
     return user;
   }
-  public async login(input: LoginInputDTO):Promise<User> {
-    const { email, password } = input;
-    const [user] = await BaseDatabase.connection(
+  public async login(input: LoginInputDTO): Promise<UserModel> {
+    const { user, email, password } = input;
+    const [isUser] = await BaseDatabase.connection(
       UserDataBase.TABLE_ACCOUNTS
     ).where({ email: email, password: password });
-
-    return user;
+    return isUser;
   }
 }

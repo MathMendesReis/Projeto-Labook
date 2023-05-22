@@ -1,4 +1,4 @@
--- Active: 1684098457765@@127.0.0.1@3306
+-- Active: 1684754398798@@127.0.0.1@3306
 CREATE TABLE USERS(
     id TEXT NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -26,3 +26,7 @@ CREATE TABLE likes_dislikes(
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN Key (post_id) REFERENCES POSTS(id)
 );
+
+delete from likes_dislikes;
+
+

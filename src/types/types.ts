@@ -13,13 +13,13 @@ export interface userLogin {
 }
 
 export interface createPost {
-  id: String;
-  creator_id: String;
-  content: String;
+  id: string;
+  creator_id: string;
+  content: string;
   likes: number;
   dislikes: number;
-  created_at: String;
-  update_at: String;
+  created_at: string;
+  update_at: string;
 }
 export interface updatePost {
   id: string;
