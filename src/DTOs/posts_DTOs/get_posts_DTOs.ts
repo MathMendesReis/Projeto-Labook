@@ -1,3 +1,4 @@
+import {z} from 'zod'
 export interface get_post_output  {
     id:string  ,
     content:string ,
@@ -10,3 +11,15 @@ export interface get_post_output  {
         name:string
     }
 }
+
+
+export interface GetPostInputDTO {
+  token: string; 
+}
+
+
+export const GetPostSchema = z
+  .object({
+    token: z.string().min(1),
+  })
+  .transform((data) => data as GetPostInputDTO);

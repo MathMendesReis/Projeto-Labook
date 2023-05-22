@@ -8,6 +8,12 @@ const checkIfIdExists = async (id: string) => {
   return exists;
 };
 export interface CreatePostInputDTO {
+  creator_id: string;
+  content: string;
+  token:string
+}
+
+export interface PostDB {
   id: string;
   creator_id: string;
   content: string;
@@ -21,14 +27,11 @@ export interface CreatePostOutputDTO {
   content: string;
 }
 
+
 export const CreateUserSchema = z
   .object({
-    id: z.string().min(1),
     creator_id: z.string(),
     content: z.string(),
-    likes: z.number(),
-    dislikes: z.number(),
-    created_at: z.string(),
-    update_at: z.string(),
+    token:z.string()
   })
   .transform((data) => data as CreatePostInputDTO);

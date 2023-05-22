@@ -1,7 +1,6 @@
 import { createPost, like_dislike } from "./../../types/types";
-import { Post } from "./../../models/posts/Post";
 import { BaseDatabase } from "../BaseDataBase";
-import { CreatePostInputDTO } from "../../DTOs/posts_DTOs/create_Post_DTOS";
+import { PostDB } from "../../DTOs/posts_DTOs/create_Post_DTOS";
 import { get_post_output } from "../../DTOs/posts_DTOs/get_posts_DTOs";
 
 export class PostDatabase extends BaseDatabase {
@@ -9,10 +8,10 @@ export class PostDatabase extends BaseDatabase {
 
   public async get_post(): Promise<get_post_output[]> {
     const result = await BaseDatabase.connection(PostDatabase.TABLE_ACCOUNTS)
-      .select()
+      .select("posts.*", "users.name")
       .from(PostDatabase.TABLE_ACCOUNTS)
       .innerJoin("users", "posts.creator_id", "users.id");
-
+      console.log(result)
     const formaterResult = result.map((post) => {
       return {
         id: post.id,
@@ -31,26 +30,33 @@ export class PostDatabase extends BaseDatabase {
     return formaterResult;
   }
 
-  public async get_post_by_id(id: string): Promise<createPost> {
+  public async get_post_by_id(id: string): Promise<PostDB> {
     const [result] = await BaseDatabase.connection(
       PostDatabase.TABLE_ACCOUNTS
-    ).where({ id: id });
+    ).where({ id });
     return result;
   }
-  public async create_post(newPost: createPost): Promise<void> {
-    const result = await BaseDatabase.connection(
-      PostDatabase.TABLE_ACCOUNTS
-    ).insert(newPost);
+  public async get_user_by_id(id: string): Promise<createPost> {
+    const [result] = await BaseDatabase.connection("users").where({ id });
+    return result;
+  }
+  public async create_post(newPost: PostDB): Promise<void> {
+    await BaseDatabase.connection(PostDatabase.TABLE_ACCOUNTS).insert(newPost);
   }
   public async edit_post(postUpdate: createPost): Promise<void> {
     const result = await BaseDatabase.connection(PostDatabase.TABLE_ACCOUNTS)
       .where({ id: postUpdate.id })
       .update(postUpdate);
   }
-  public async delete_post(id: string) {
-    const result = await BaseDatabase.connection(PostDatabase.TABLE_ACCOUNTS)
+
+  public async checkIdUserInPost(id: string): Promise<createPost[]> {
+    return await BaseDatabase.connection(PostDatabase.TABLE_ACCOUNTS).where({
+      creator_id: id,
+    });
+  }
+  public async delete_post(id: string): Promise<void> {
+    await BaseDatabase.connection(PostDatabase.TABLE_ACCOUNTS)
       .del()
       .where({ id: id });
   }
-  public async like_dislike_post(input: like_dislike) {}
 }

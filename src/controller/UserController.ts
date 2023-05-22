@@ -7,7 +7,7 @@ import {ZodError} from 'zod'
 export class UserController {
   constructor(private userBusiness: UserBusiness) {}
 
-  public signUp = async (req: Request, res: Response): Promise<void> => {
+  public signUp = async (req: Request, res: Response)=> {
     try {
       const input = SingUpDtoSchemma.parse({
         name: req.body.name,
@@ -17,7 +17,7 @@ export class UserController {
       });
 
       const result = await this.userBusiness.signUp(input);
-      res.status(200).send(result);
+      res.status(201).send(result);
     } catch (error) {
       if (error instanceof ZodError) {
         res.status(400).send(error.issues)
@@ -29,9 +29,9 @@ export class UserController {
     }
   };
 
-  public login = async (req: Request, res: Response): Promise<void> => {
+  public login = async (req: Request, res: Response) => {
     try {
-      const input = LoginDTOSchemma.parse( { email: req.body.email, password: req.body.password });
+      const input = LoginDTOSchemma.parse( { user: req.body.user,email: req.body.email, password: req.body.password });
     
       const result = await this.userBusiness.login(input);
       res.status(200).send(result);

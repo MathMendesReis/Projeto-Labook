@@ -45,10 +45,10 @@ export class UserBusiness {
   }
 
   const token = this.tokenManager.createToken(tokenPayload)
-  const output = {
+  const output: SingUpDtoOutputDTO = {
     message: "Cadastro realizado com sucesso",
-    token
-} 
+    token,
+  }; 
     return output;
   }
 
@@ -59,16 +59,25 @@ export class UserBusiness {
     if (!result) {
       throw new NotFoundError("email ou senha errada.");
     }
-    console.log(result)
+
+    const user = new User(
+      result.id,
+      result.name,
+      result.email,
+      result.password,
+      result.role,
+      result.createdAt
+    )
     
     const tokenPayload: TokenPayload = {
-      id: result.getId(),
-      name: result.getName(),
-      role: result.getRole()
+      id: user.getId(),
+      name: user.getName(),
+      role: user.getRole()
   }
   const token = this.tokenManager.createToken(tokenPayload)
 
     const output: SingUpDtoOutputDTO = {
+      message:`login realizado com sucesso`,
       token
     };
     return output;
