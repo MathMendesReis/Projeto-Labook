@@ -1,4 +1,4 @@
-import { NotFoundError } from './../../error/NotFoundError';
+import { NotFoundError } from "./../../error/NotFoundError";
 import { BadRequestError } from "./../../error/BadRequesteError";
 import { User } from "./../../models/users/User";
 import { UserDataBase } from "./../../database/users/UserDataBase";
@@ -8,11 +8,17 @@ import {
   USER_ROLES,
 } from "../../DTOs/users_DTOs/singUp.DTO";
 import { LoginInputDTO } from "../../DTOs/users_DTOs/login.DTO";
+import { IdGenerator } from "../../services/IdGenerator";
+import { TokenManager, TokenPayload } from "../../services/TokenManager";
 
 export class UserBusiness {
-  constructor(private userDataBase: UserDataBase) {}
+  constructor(
+    private userDataBase: UserDataBase,
+    private idGenerator: IdGenerator,
+    private tokenManager: TokenManager
+  ) {}
   public async signUp(input: SingUpDtoInputDTO): Promise<SingUpDtoOutputDTO> {
-    const id:string = Math.floor(Math.random() * 100).toString()
+    const id = this.idGenerator.generate();
     const isUser = await this.userDataBase.getById(id);
     if (isUser.length > 0) {
       throw new BadRequestError("'Usuario' ja cadastrado");
@@ -31,21 +37,39 @@ export class UserBusiness {
     );
 
     const result = await this.userDataBase.signUp(newUser);
-    const output = {
-      token: "um token jwt"
-    };
+
+    const tokenPayload: TokenPayload = {
+      id: newUser.getId(),
+      name: newUser.getName(),
+      role: newUser.getRole()
+  }
+
+  const token = this.tokenManager.createToken(tokenPayload)
+  const output = {
+    message: "Cadastro realizado com sucesso",
+    token
+} 
     return output;
   }
 
-  public async login(input: LoginInputDTO):Promise<SingUpDtoOutputDTO> {
+  public async login(input: LoginInputDTO): Promise<SingUpDtoOutputDTO> {
     const userDataBase = new UserDataBase();
-   
+
     const result = await userDataBase.login(input);
-    if(!result){
-      throw new NotFoundError("email ou senha errada.")
+    if (!result) {
+      throw new NotFoundError("email ou senha errada.");
     }
-    const output:SingUpDtoOutputDTO = {
-      token: "um token jwt"
+    console.log(result)
+    
+    const tokenPayload: TokenPayload = {
+      id: result.getId(),
+      name: result.getName(),
+      role: result.getRole()
+  }
+  const token = this.tokenManager.createToken(tokenPayload)
+
+    const output: SingUpDtoOutputDTO = {
+      token
     };
     return output;
   }
