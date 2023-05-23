@@ -1,7 +1,7 @@
-import { createPost, like_dislike } from "./../../types/types";
-import { BaseDatabase } from "../BaseDataBase";
-import { PostDB } from "../../DTOs/posts_DTOs/create_Post_DTOS";
-import { get_post_output } from "../../DTOs/posts_DTOs/get_posts_DTOs";
+import { createPost, like_dislike } from "../types/types";
+import { BaseDatabase } from "./BaseDataBase";
+import { PostDB } from "../DTOs/create_Post_DTOS";
+import { get_post_output } from "../DTOs/get_posts_DTOs";
 
 export class PostDatabase extends BaseDatabase {
   public static TABLE_ACCOUNTS = "posts";
@@ -11,7 +11,6 @@ export class PostDatabase extends BaseDatabase {
       .select("posts.*", "users.name")
       .from(PostDatabase.TABLE_ACCOUNTS)
       .innerJoin("users", "posts.creator_id", "users.id");
-      console.log(result)
     const formaterResult = result.map((post) => {
       return {
         id: post.id,

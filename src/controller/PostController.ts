@@ -1,11 +1,11 @@
-import { CreateUserSchema } from "./../DTOs/posts_DTOs/create_Post_DTOS";
+import { CreateUserSchema } from "../DTOs/create_Post_DTOS";
 import { Response } from "express";
 import { Request } from "express";
 import { BaseError } from "../error/BaseError";
-import { PostBusiness } from "../business/post/PostBusiness";
-import { edit_postDTOSchemma } from "../DTOs/posts_DTOs/edit_post.DTO";
+import { PostBusiness } from "../business/PostBusiness";
+import { edit_postDTOSchemma } from "../DTOs/edit_post.DTO";
 import {ZodError} from 'zod'
-import { GetPostSchema } from "../DTOs/posts_DTOs/get_posts_DTOs";
+import { GetPostSchema } from "../DTOs/get_posts_DTOs";
 
 export class PostController {
   constructor(private postBusiness: PostBusiness) {}

@@ -18,7 +18,7 @@ export class Like_dislike {
   ) {}
 }
 
-export interface createLike {
+export interface modelLike {
   user_id: string;
   post_id: string;
   like: number;

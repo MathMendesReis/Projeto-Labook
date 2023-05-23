@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { PostDatabase } from "../../database/post/PostDatabase";
+import { PostDatabase } from "../database/PostDatabase";
 
 const checkIfIdExists = async (id: string) => {
   const post_database = new PostDatabase();

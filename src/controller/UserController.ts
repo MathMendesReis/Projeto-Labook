@@ -1,8 +1,8 @@
-import { LoginDTOSchemma } from './../DTOs/users_DTOs/login.DTO';
-import { UserBusiness } from "./../business/users/UserBusiness";
+import { LoginDTOSchemma } from '../DTOs/login.DTO';
+import { UserBusiness } from "../business/UserBusiness";
 import { Request, Response } from "express";
 import { BaseError } from "../error/BaseError";
-import { SingUpDtoSchemma } from "../DTOs/users_DTOs/singUp.DTO";
+import { SingUpDtoSchemma } from "../DTOs/singUp.DTO";
 import {ZodError} from 'zod'
 export class UserController {
   constructor(private userBusiness: UserBusiness) {}
