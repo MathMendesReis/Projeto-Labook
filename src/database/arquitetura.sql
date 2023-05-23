@@ -19,14 +19,19 @@ CREATE TABLE POSTS(
     FOREIGN KEY (creator_id) REFERENCES users (id)
 );
 
-CREATE TABLE likes_dislikes(
-    user_id TEXT NOT NULL,
-    post_id TEXT NOT NULL,
-    LIKE INTEGER NOT NULL CHECK(LENGTH(LIKE) = 1),
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN Key (post_id) REFERENCES POSTS(id)
-);
+CREATE TABLE
+    likes_dislikes(
+        user_id TEXT NOT NULL,
+        post_id TEXT NOT NULL,
+        like INTEGER NOT NULL,
+        Foreign Key (user_id ) REFERENCES USERS(id),
+        Foreign Key (post_id ) REFERENCES posts (id)
+    );
 
-delete from likes_dislikes;
+SELECT * from likes_dislikes ;
+SELECT * from "USERS" ;
+SELECT * from "POSTS" ;
 
 
+DELETE FROM likes_dislikes;
+drop Table likes_dislikes;

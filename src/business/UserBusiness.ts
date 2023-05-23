@@ -1,15 +1,15 @@
-import { NotFoundError } from "./../../error/NotFoundError";
-import { BadRequestError } from "./../../error/BadRequesteError";
-import { User } from "./../../models/users/User";
-import { UserDataBase } from "./../../database/users/UserDataBase";
+import { NotFoundError } from "../error/NotFoundError";
+import { BadRequestError } from "../error/BadRequesteError";
+import { User } from "../models/User";
+import { UserDataBase } from "../database/UserDataBase";
 import {
   SingUpDtoInputDTO,
   SingUpDtoOutputDTO,
   USER_ROLES,
-} from "../../DTOs/users_DTOs/singUp.DTO";
-import { LoginInputDTO } from "../../DTOs/users_DTOs/login.DTO";
-import { IdGenerator } from "../../services/IdGenerator";
-import { TokenManager, TokenPayload } from "../../services/TokenManager";
+} from "../DTOs/singUp.DTO";
+import { LoginInputDTO } from "../DTOs/login.DTO";
+import { IdGenerator } from "../services/IdGenerator";
+import { TokenManager, TokenPayload } from "../services/TokenManager";
 
 export class UserBusiness {
   constructor(

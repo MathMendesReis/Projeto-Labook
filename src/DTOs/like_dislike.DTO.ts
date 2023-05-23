@@ -6,6 +6,10 @@ export interface likeDTOinput{
     token:string
 }
 
+export interface likeDTOOutput {
+  like:boolean
+}
+
 export const likeDTOSchemma = z
   .object({
     user_id: z.string(),

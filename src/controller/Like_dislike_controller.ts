@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { Like_dislike_business } from "../business/like_dislike/Like_dislike_business";
+import { Like_dislike_business } from "../business/Like_dislike_business";
 import { ZodError } from "zod";
 import { BaseError } from "../error/BaseError";
-import { likeDTOSchemma } from "../DTOs/like_dislike/like_dislike.DTO";
+import { likeDTOSchemma } from "../DTOs/like_dislike.DTO";
 
 export class Like_dislike_controller {
     constructor(private like_dislike_business : Like_dislike_business){}
@@ -14,10 +14,12 @@ export class Like_dislike_controller {
               like: req.body.like,
               token: req.headers.authorization,
             });
-            const result = this.like_dislike_business.like(input);
+            const result = await this.like_dislike_business.like(input);
+            
             res.status(200).send(result)
             
         } catch (error) {
+          console.log(error)
             if (error instanceof ZodError) {
               res.status(400).send(error.issues);
             } else if (error instanceof BaseError) {

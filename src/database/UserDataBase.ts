@@ -1,7 +1,7 @@
-import { User, UserModel } from "../../models/users/User";
-import { userCreate } from "../../types/types";
-import { BaseDatabase } from "../BaseDataBase";
-import { LoginInputDTO } from "../../DTOs/users_DTOs/login.DTO";
+import { User, UserModel } from "../models/User";
+import { userCreate } from "../types/types";
+import { BaseDatabase } from "./BaseDataBase";
+import { LoginInputDTO } from "../DTOs/login.DTO";
 
 export class UserDataBase extends BaseDatabase {
   public static TABLE_ACCOUNTS = "users";

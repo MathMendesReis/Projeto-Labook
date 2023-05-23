@@ -1,4 +1,4 @@
-import { USER_ROLES } from "../../DTOs/users_DTOs/singUp.DTO";
+import { USER_ROLES } from "../DTOs/singUp.DTO";
 
 export interface UserModel {
   id: string;

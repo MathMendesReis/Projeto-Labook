@@ -1,19 +1,19 @@
-import { PostDatabase } from "./../../database/post/PostDatabase";
-import { NotFoundError } from "./../../error/NotFoundError";
-import { Post } from "../../models/posts/Post";
+import { PostDatabase } from "../database/PostDatabase";
+import { NotFoundError } from "../error/NotFoundError";
+import { Post } from "../models/Post";
 import {
   CreatePostInputDTO,
   CreatePostOutputDTO,
   PostDB,
-} from "../../DTOs/posts_DTOs/create_Post_DTOS";
+} from "../DTOs/create_Post_DTOS";
 import {
   edit_postDTOInput,
   edit_postDTOOutput,
-} from "../../DTOs/posts_DTOs/edit_post.DTO";
-import { IdGenerator } from "../../services/IdGenerator";
-import { TokenManager } from "../../services/TokenManager";
-import { GetPostInputDTO } from "../../DTOs/posts_DTOs/get_posts_DTOs";
-import { BadRequestError } from "../../error/BadRequesteError";
+} from "../DTOs/edit_post.DTO";
+import { IdGenerator } from "../services/IdGenerator";
+import { TokenManager } from "../services/TokenManager";
+import { GetPostInputDTO } from "../DTOs/get_posts_DTOs";
+import { BadRequestError } from "../error/BadRequesteError";
 export class PostBusiness {
   constructor(
     private postDatabase: PostDatabase,
@@ -39,8 +39,8 @@ export class PostBusiness {
   ): Promise<CreatePostOutputDTO> {
     const { token } = input;
     const isId = await this.postDatabase.get_user_by_id(input.creator_id);
-    if (isId) {
-      throw new NotFoundError("id já cadastrado");
+    if (!isId) {
+      throw new NotFoundError("usuario não esta cadastrado");
     }
 
     const payload = this.tokenManager.getPayload(token)
@@ -86,6 +86,10 @@ export class PostBusiness {
       throw new BadRequestError("token invalido")
     }
     const postDB = await this.postDatabase.get_post_by_id(input.id);
+    if(!postDB){
+      throw new NotFoundError("'Post' não cadastrado")
+    }
+    
 
     const postUpdate = new Post(
       postDB.id,

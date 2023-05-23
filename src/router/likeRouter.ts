@@ -1,7 +1,7 @@
 import express from 'express'
 import { Like_dislike_controller } from '../controller/Like_dislike_controller'
-import { Like_dislike_business } from '../business/like_dislike/Like_dislike_business'
-import { Like_dislike_database } from '../database/like_dislike/Like_dislike'
+import { Like_dislike_business } from '../business/Like_dislike_business'
+import { Like_dislike_database } from '../database/Like_dislike'
 
 export const likeRouter = express.Router()
 

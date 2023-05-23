@@ -1,5 +1,5 @@
-import { UserBusiness } from "../business/users/UserBusiness";
-import { UserDataBase } from "../database/users/UserDataBase";
+import { UserBusiness } from "../business/UserBusiness";
+import { UserDataBase } from "../database/UserDataBase";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
 import { UserController } from "./../controller/UserController";
