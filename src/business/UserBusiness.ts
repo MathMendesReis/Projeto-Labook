@@ -1,37 +1,44 @@
-import { NotFoundError } from "../error/NotFoundError";
 import { BadRequestError } from "../error/BadRequesteError";
-import { User } from "../models/User";
+import { USER_ROLES, User, UserModelToken } from "../models/User";
 import { UserDataBase } from "../database/UserDataBase";
 import {
   SingUpDtoInputDTO,
   SingUpDtoOutputDTO,
-  USER_ROLES,
+
 } from "../DTOs/singUp.DTO";
 import { LoginInputDTO } from "../DTOs/login.DTO";
 import { IdGenerator } from "../services/IdGenerator";
-import { TokenManager, TokenPayload } from "../services/TokenManager";
+import { TokenManager, TokenPayload, TokenPayloadReset } from "../services/TokenManager";
+import { HashManager } from "../services/HashManager";
+
+
+require('dotenv').config();
+
 
 export class UserBusiness {
   constructor(
     private userDataBase: UserDataBase,
     private idGenerator: IdGenerator,
-    private tokenManager: TokenManager
+    private tokenManager: TokenManager,
+    private hashManager: HashManager
   ) {}
   public async signUp(input: SingUpDtoInputDTO): Promise<SingUpDtoOutputDTO> {
     const id = this.idGenerator.generate();
-    const isUser = await this.userDataBase.getById(id);
-    if (isUser.length > 0) {
+    const hashedPassword = await this.hashManager.hash(input.password)
+
+    const isUser = await this.userDataBase.getById(id)
+    if (isUser) {
       throw new BadRequestError("'Usuario' ja cadastrado");
     }
     const isEmail = await this.userDataBase.getByEmail(input.email);
-    if (isEmail.length > 0) {
+    if (isEmail) {
       throw new BadRequestError("'email' já cadastrado");
     }
     const newUser = new User(
       id,
       input.name,
       input.email,
-      input.password,
+      hashedPassword,
       USER_ROLES.NORMAL,
       new Date().toISOString()
     );
@@ -40,7 +47,6 @@ export class UserBusiness {
 
     const tokenPayload: TokenPayload = {
       id: newUser.getId(),
-      name: newUser.getName(),
       role: newUser.getRole()
   }
 
@@ -52,34 +58,44 @@ export class UserBusiness {
     return output;
   }
 
-  public async login(input: LoginInputDTO): Promise<SingUpDtoOutputDTO> {
+  public async login({email, password}: LoginInputDTO): Promise<SingUpDtoOutputDTO> {
     const userDataBase = new UserDataBase();
-
-    const result = await userDataBase.login(input);
-    if (!result) {
-      throw new NotFoundError("email ou senha errada.");
+  
+    const userDB = await this.userDataBase.getByEmail(email);
+    if (!userDB) {
+      throw new BadRequestError("'email' não encontrado.");
     }
-
+  
+  const hashedPassword = userDB.password
+  
+    // o serviço hashManager analisa o password do body (plaintext) e o hash
+    const isPasswordCorrect = await this.hashManager.compare(password, hashedPassword)
+  
+    // validamos o resultado
+    if (!isPasswordCorrect) {
+      throw new BadRequestError("'email' ou 'password' incorretos")
+    }
+    
     const user = new User(
-      result.id,
-      result.name,
-      result.email,
-      result.password,
-      result.role,
-      result.createdAt
+      userDB.id,
+      userDB.name,
+      userDB.email,
+      userDB.password,
+      userDB.role,
+      userDB.createdAt
     )
     
     const tokenPayload: TokenPayload = {
       id: user.getId(),
-      name: user.getName(),
       role: user.getRole()
   }
   const token = this.tokenManager.createToken(tokenPayload)
-
+  
     const output: SingUpDtoOutputDTO = {
       message:`login realizado com sucesso`,
       token
     };
     return output;
   }
+  
 }

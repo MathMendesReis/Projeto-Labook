@@ -14,16 +14,24 @@ import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
 import { GetPostInputDTO } from "../DTOs/get_posts_DTOs";
 import { BadRequestError } from "../error/BadRequesteError";
+import { HashManager } from "../services/HashManager";
+import { USER_ROLES } from "../models/User";
 export class PostBusiness {
   constructor(
     private postDatabase: PostDatabase,
     private idGenerator: IdGenerator,
-    private tokenManager: TokenManager
+    private tokenManager: TokenManager,
+    private hashManager: HashManager
+
   ) {}
   public async get_post(input: GetPostInputDTO) {
     const {token} = input
 
     const payload = this.tokenManager.getPayload(token)
+
+    if(payload?.role !== USER_ROLES.ADMIN){
+      throw new BadRequestError("somente ADMINS podem acessar")
+    }
 
     if (payload === null) {
       throw new BadRequestError("token inválido");

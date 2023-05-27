@@ -58,4 +58,9 @@ export class PostDatabase extends BaseDatabase {
       .del()
       .where({ id: id });
   }
+
+  public async generateResetToken(id:string):Promise<PostDB[]> {
+    return await BaseDatabase.connection(PostDatabase.TABLE_ACCOUNTS)
+      .where({ id: id });
+  }
 }

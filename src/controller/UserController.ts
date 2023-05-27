@@ -4,6 +4,8 @@ import { Request, Response } from "express";
 import { BaseError } from "../error/BaseError";
 import { SingUpDtoSchemma } from "../DTOs/singUp.DTO";
 import {ZodError} from 'zod'
+
+
 export class UserController {
   constructor(private userBusiness: UserBusiness) {}
 
@@ -13,7 +15,6 @@ export class UserController {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-
       });
 
       const result = await this.userBusiness.signUp(input);
@@ -31,11 +32,13 @@ export class UserController {
 
   public login = async (req: Request, res: Response) => {
     try {
-      const input = LoginDTOSchemma.parse( { user: req.body.user,email: req.body.email, password: req.body.password });
+      const input = LoginDTOSchemma.parse({ email: req.body.email, password: req.body.password });
     
       const result = await this.userBusiness.login(input);
       res.status(200).send(result);
     } catch (error) {
+      console.log(error)
+
       if (error instanceof ZodError) {
         res.status(400).send(error.issues)
      } else if (error instanceof BaseError) {
@@ -45,4 +48,7 @@ export class UserController {
      }
     }
   };
+
+  
+
 }

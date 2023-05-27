@@ -1,4 +1,4 @@
--- Active: 1684754398798@@127.0.0.1@3306
+-- Active: 1685113311386@@127.0.0.1@5432
 CREATE TABLE USERS(
     id TEXT NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -8,6 +8,8 @@ CREATE TABLE USERS(
     created_at DATETIME DEFAULT (DATETIME('now', 'localtime')) NOT NULL
 );
 
+INSERT INTO users (id,name, email, password,role)
+VALUES ('ADMIN', 'ADMIN', '', 'ADMIN123456', 'ADMIN');
 CREATE TABLE POSTS(
     id TEXT NOT NULL PRIMARY KEY,
     creator_id TEXT NOT NULL,
@@ -28,10 +30,16 @@ CREATE TABLE
         Foreign Key (post_id ) REFERENCES posts (id)
     );
 
+
 SELECT * from likes_dislikes ;
 SELECT * from "USERS" ;
 SELECT * from "POSTS" ;
 
 
-DELETE FROM likes_dislikes;
-drop Table likes_dislikes;
+-- DELETE FROM likes_dislikes;
+-- drop Table likes_dislikes;
+-- DROP TABLE "USERS";
+-- DROP TABLE "POSTS";
+
+ALTER TABLE USERS
+ADD COLUMN reset_token TEXT;
