@@ -18,7 +18,7 @@ export class Like_dislike_business {
 
     const userDataBase = new UserDataBase();
     const isUser = await userDataBase.getById(user_id);
-    if (isUser.length < 1) {
+    if (!isUser) {
       throw new BadRequestError("'Usuario' não esta ja cadastrado");
     }
 

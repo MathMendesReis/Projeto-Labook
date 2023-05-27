@@ -5,10 +5,7 @@ export interface SingUpDtoInputDTO  {
     email:string,
     password:string,
 }
-export enum USER_ROLES {
-    NORMAL = "NORMAL",
-    ADMIN = "ADMIN"
-}
+
 export interface SingUpDtoOutputDTO  {
     message:string,
     token: string

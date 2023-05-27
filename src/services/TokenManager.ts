@@ -1,7 +1,5 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { USER_ROLES } from "../DTOs/singUp.DTO";
-
 dotenv.config();
 
 // esse enum pode ser alocado para outro arquivo
@@ -10,8 +8,11 @@ dotenv.config();
 // essa interface também pode ser alocada para outro arquivo
 export interface TokenPayload {
   id: string;
-  name: string;
   role: string;
+}
+
+export interface TokenPayloadReset extends TokenPayload {
+  token: string;
 }
 
 export class TokenManager {

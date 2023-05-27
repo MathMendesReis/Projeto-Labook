@@ -4,10 +4,16 @@ import express from "express";
 import { PostDatabase } from "../database/PostDatabase";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
+import { HashManager } from "../services/HashManager";
 
 export const postRouter = express.Router();
 const post_controller = new PostController(
-  new PostBusiness(new PostDatabase(), new IdGenerator(), new TokenManager())
+  new PostBusiness(
+    new PostDatabase(),
+     new IdGenerator(),
+      new TokenManager(),
+      new HashManager()
+        )
 );
 
 postRouter.get("/", post_controller.get_post);
