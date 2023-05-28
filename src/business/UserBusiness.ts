@@ -12,7 +12,6 @@ import { TokenManager, TokenPayload, TokenPayloadReset } from "../services/Token
 import { HashManager } from "../services/HashManager";
 
 
-require('dotenv').config();
 
 
 export class UserBusiness {
