@@ -1,4 +1,3 @@
-import { resolveTxt } from "dns";
 import { likeDTOOutput, likeDTOinput } from "../DTOs/like_dislike.DTO";
 import { Like_dislike_database } from "../database/Like_dislike";
 import { BadRequestError } from "../error/BadRequesteError";
@@ -57,7 +56,7 @@ export class Like_dislike_business {
     }
   }
 
-  public async updateLike(input: Like_dislike) {
+  public async updateLike(input: Like_dislike):Promise<void> {
     await this.like_dislike_database.updateLike(input);
   }
 }
