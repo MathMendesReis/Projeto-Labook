@@ -19,6 +19,3 @@ const userController = new UserController(
 
 userRouter.post("/singUp", userController.signUp);
 userRouter.post("/login", userController.login);
-userRouter.put("/resetpassword", userController.generateResetToken);
-
-

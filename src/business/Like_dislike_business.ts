@@ -57,7 +57,7 @@ export class Like_dislike_business {
     }
   }
 
-  public async updateLike(input: Like_dislike) {
+  public async updateLike(input: Like_dislike):Promise<void> {
     await this.like_dislike_database.updateLike(input);
   }
 }
