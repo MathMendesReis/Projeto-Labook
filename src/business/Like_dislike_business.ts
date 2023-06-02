@@ -1,4 +1,3 @@
-import { resolveTxt } from "dns";
 import { likeDTOOutput, likeDTOinput } from "../DTOs/like_dislike.DTO";
 import { Like_dislike_database } from "../database/Like_dislike";
 import { BadRequestError } from "../error/BadRequesteError";
